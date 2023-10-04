@@ -1,13 +1,83 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.-flex{
+   display: flex;
+   justify-content: space-between;
+   align-items: center
+}
+.flex-container {
+  display: flex;
+  flex-direction:column ;
+  justify-content: center;
+  align-items: center;
+}
+.eror {
+  padding: 0px 1px;
+  color: red;
+  font-size: 14px;
+}
+.btn-a {
+  padding: 2px 4px;
+  font-size: 18px;
+  font-family: sans-serif;
+  background-color: rgb(255, 36, 36);
+  border: 2px solid blue;
+}
+.hedaer{
+
+   padding: 10px 50px;
+   background-color: #00ff00c4;
+   width: 80%;
+   margin: auto;
+   
+}
+
+ul li {
+   list-style: none;
+   font-size: 18px;
+   margin: 0 5px;
+}
+ul li a {
+   color: rgb(255, 0, 0);
+   text-decoration: none;
+}
+form{
+   width: 400px;
+   height: 200px;
+   margin-top: 100px;
+}
+nav ul{
+   margin: 0 5px;
+}
+.df{
+   display: flex;
+   width: 80%;
+   margin: auto;
+}
+
+.contianer{
+   margin: auto;
+   width: 100%;
 }
