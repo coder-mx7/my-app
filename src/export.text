@@ -1,0 +1,12 @@
+        <i
+          onClick={() => delatuser(el.id)}
+          style={{ fontSize: "23px", color: "red" }}
+          className="fa-sharp fa-solid fa-trash cur"
+        ></i>
+        <Link
+          to={`/dashboard/update/${el.id}`}
+          style={{ fontSize: "23px", color: "green" }}
+          className="fa-sharp fa-solid fa-pen-to-square cur"
+        ></Link>
+
+        

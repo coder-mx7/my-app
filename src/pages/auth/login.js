@@ -1,19 +1,27 @@
+import Header from "../../compoont/header";
 import axios from "axios";
-import { useState } from "react";
-import Header from "./compoont/header";
-let megsg = "";
-
+import { useContext, useState } from "react";
+import React from "react";
+import { User } from "../../Context/contex";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 const Regester = () => {
-  const [firstName, setFirst] = useState("");
+  const megsg = "";
+  const nav = useNavigate();
+  const userNow = useContext(User);
+
+  const token = userNow.Auth.token;
+  console.log(userNow);
+  const cookie = new Cookies()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [passwordR, setPasswordR] = useState("");
   const [accept, setAccept] = useState(false);
   const [flag, setflag] = useState(true);
+
   function handleSubmit(e) {
     e.preventDefault();
     setAccept(true);
-    if (firstName === "" || passwordR !== password || password.length < 8) {
+    if (password.length < 8) {
       setflag(false);
       console.log("false");
     } else {
@@ -21,22 +29,36 @@ const Regester = () => {
     }
     if (flag) {
       axios
-        .post("http://127.0.0.1:8000/api/register", {
-          email: email,
-          name: firstName,
-          password: password,
-          password_confirmation: passwordR,
-        })
+        .post(
+          `http://127.0.0.1:8000/api/login`,
+          {
+            email: email,
+            password: password,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           console.log(response);
-          if(response.status===200){
-            window.location.pathname = '/'
+          if (response.status === 200) {
+            nav(`/dashboard/users`);
+            const token = response.data.data.token;
+            const user = response.data.data.user;
+            cookie.set('Bearer',token,{
+               path:'/'
+            })
+            console.log(user, token);
+            userNow.setAuth({ user, token });
           }
         })
         .catch((err) => {
           console.log(err.response.data.message);
           if (err.response.data.message) {
-            megsg = err.response.data.message;
+            let megsg = err.response.data.message;
             console.log(megsg);
             document.getElementById("mesgid").innerHTML = megsg;
           } else {
@@ -51,16 +73,6 @@ const Regester = () => {
       <Header />
       <div className="flex">
         <form className="flex" onSubmit={handleSubmit}>
-          <label htmlFor="firstName">First Name</label>
-          <input
-            onChange={(e) => setFirst(e.target.value)}
-            id="firstName"
-            placeholder="Enter your first name"
-            type="text"
-            value={firstName}
-            required
-          />
-
           <label htmlFor="email">Email</label>
           <input
             onChange={(e) => setEmail(e.target.value)}
@@ -84,21 +96,8 @@ const Regester = () => {
             <p className="eror">كلمة السر قصيرة جداً</p>
           )}
 
-          <label htmlFor="passwordR">Repeat Password</label>
-          <input
-            onChange={(e) => setPasswordR(e.target.value)}
-            id="passwordR"
-            placeholder="Repeat your password"
-            type="password"
-            value={passwordR}
-            required
-          />
-          {passwordR !== password && accept && (
-            <p className="eror">كلمة السر غير متطابقة</p>
-          )}
-
           <p id="mesgid"> {megsg} </p>
-          <button type="submit">Submit</button>
+          <button type="submit">login</button>
         </form>
       </div>
     </div>

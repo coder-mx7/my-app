@@ -1,35 +1,49 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Dashbord.css";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { User } from "./Context/contex";
 
 // url delte = `http://127.0.0.1:8000/api/user/delete/${id}`
-//
-
-
+// url show users = .get("http://127.0.0.1:8000/api/user/show") use =< useeffect for api
 
 const Users = () => {
-  async function delatuser(id) {
-    await axios.delete(`http://127.0.0.1:8000/api/user/delete/${id}`);
-    setrun((pre) => pre + 1);
-  }
+  const [runuser, setrun] = useState(0);
+  const [user, setuser] = useState([]);
 
-  const [runusers, setrun] = useState(0);
-
-  const [users, setusers] = useState([]);
-  useEffect(() => {
-    axios
-      .get("http://127.0.0.1:8000/api/user/show")
-      .then((res) => setusers(res.data))
-      .catch((error) => console.log(error));
-  }, [runusers]); //# laste update
+  const contex = useContext(User);
+  const token = contex.Auth.token;
+  console.log(token);
 
   
 
-  const showusers = users.map((el, index) => (
+  useEffect(() => {
+    return () => {
+      axios
+        .get("http://127.0.0.1:8000/api/user/show", {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => setuser(res.data));
+    };
+  }, [runuser]);
+
+  async function delatuser(id) {
+    await axios.delete(`http://127.0.0.1:8000/api/user/delete/${id}`, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    setrun((per) => per + 1);
+  }
+
+  const showUser = user.map((el, index) => (
     <tr key={index}>
       <td>{el.id}</td>
-      <td>{el.name}</td>
+      <td> {el.name} </td>
       <td>{el.email}</td>
       <td className="sp">
         <i
@@ -50,14 +64,14 @@ const Users = () => {
     <div style={{ padding: "20px" }}>
       <table>
         <thead>
-          <tr>
-            <th>Id</th>
-            <th>User</th>
-            <th>Eamil</th>
-            <th>Action</th>
+          <tr style={{ background: "#a0cbcf" }}>
+            <td>Id</td>
+            <td>User</td>
+            <td>Email</td>
+            <td>Action</td>
           </tr>
         </thead>
-        <tbody>{showusers}</tbody>
+        <tbody>{showUser}</tbody>
       </table>
     </div>
   );

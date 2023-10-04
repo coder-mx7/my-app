@@ -1,17 +1,21 @@
+import Header from "../../compoont/header";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-
-let megsg = "";
-const Update = () => {
-  const { id } = useParams();
-  console.log(id);
+import { useContext, useState } from "react";
+import React from "react";
+import { User } from "../../Context/contex";
+import { useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
+const Regester = () => {
+  const megsg = "";
+  const nav = useNavigate();
+  const userNow = useContext(User);
   const [firstName, setFirst] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordR, setPasswordR] = useState("");
   const [accept, setAccept] = useState(false);
   const [flag, setflag] = useState(true);
+  const cookie = new Cookies()
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -24,7 +28,7 @@ const Update = () => {
     }
     if (flag) {
       axios
-        .post(`http://127.0.0.1:8000/api/user/update/${id}`, {
+        .post(`http://127.0.0.1:8000/api/register`, {
           email: email,
           name: firstName,
           password: password,
@@ -33,23 +37,36 @@ const Update = () => {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            window.location.pathname = "/dashboard/users";
+            //window.location.pathname = `/${props.navigate}`
+            nav(`/dashboard/users`);
+
+            localStorage.setItem("email", email);
+            const token = response.data.data.token;
+            const user = response.data.data.user;
+            cookie.set('Bearer',token,{
+               path:'/'
+            })
+            console.log(user, token);
+            userNow.setAuth({ user, token });
           }
         })
-        .catch((err) => {});
+        .catch((err) => {
+          console.log(err.response.data.message);
+          if (err.response.data.message) {
+            let megsg = err.response.data.message;
+            console.log(megsg);
+            document.getElementById("mesgid").innerHTML = megsg;
+          } else {
+            document.getElementById("mesgid").innerHTML = "";
+          }
+        });
     }
   }
 
-  useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/api/user/showbyid/${id}`).then((res) => {
-      console.log(res.data[0]);
-      setEmail(res.data[0].email);
-      setFirst(res.data[0].name);
-    });
-  }, []);
-
   return (
     <div className="flex-container">
+      <Header />
+
       <div className="flex">
         <form className="flex" onSubmit={handleSubmit}>
           <label htmlFor="firstName">First Name</label>
@@ -99,11 +116,11 @@ const Update = () => {
           )}
 
           <p id="mesgid"> {megsg} </p>
-          <button type="submit">Submit</button>
+          <button type="submit">regeste</button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Update;
+export default Regester;

@@ -1,11 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function logaut() {
-  localStorage.removeItem("email");
-  localStorage.removeItem("password");
-  window.location.pathname = "/";
-}
+
 
 const Header = () => {
   return (
@@ -14,7 +10,7 @@ const Header = () => {
         <ul className="-flex">
           <Link to="/">Store</Link>
           <li>
-            <Link to="">home</Link>
+            <Link to="/">home</Link>
           </li>
           <li>
             <Link to="">about</Link>
@@ -24,26 +20,23 @@ const Header = () => {
           </li>
         </ul>
         <div className="-flex">
-          {localStorage.email != null ? (
-            <>
+          
+            
               
               <Link to={"/dashboard"} className="btn-a">
                 go to dashbored
               </Link>
-              <Link onClick={logaut} to={"/"} className="btn-a">
+{              /*<Link  to={"/"} className="btn-a">
                 logaut
-              </Link>
-            </>
-          ) : (
-            <>
+              </Link>*/}
+
               <Link to={"/Register"} className="btn-a">
                 regester
               </Link>
               <Link to={"/login"} className="btn-a">
                 login
               </Link>
-            </>
-          )}
+         
         </div>
       </nav>
     </div>

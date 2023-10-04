@@ -1,6 +1,6 @@
 import {Outlet } from "react-router-dom";
-import Miine from "./compoont/miine";
-import Topbar from "./compoont/topBar";
+import Miine from "../../compoont/miine";
+import Topbar from "../../compoont/topBar";
 
 function Dashboard() {
   return (

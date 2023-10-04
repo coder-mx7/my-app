@@ -6,7 +6,7 @@ const Miine = () => {
     <div style={{height:'100vh',width:'20%'}}>
       <div className="content">
         <Link to={"/dashboard/users"}>user</Link><br />
-        <Link to={"/dashboard/namess"}>names</Link>
+        <Link to={"/dashboard/users/create"}>names</Link>
       </div>
     </div>
   );
